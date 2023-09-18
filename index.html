@@ -4,15 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate Tic Tac Toe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Shadows+Into+Light&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/Ultimate_TicTacToe.css">
-    <script src="./js/Ultimate_TicTacToe.js"></script>
 </head>
 <body> 
     <header>ULTIMATE TIC TAC TOE</header>
-    <h1>PLAYER's Turn</h1>
-    <section id="bigboard">
-       <div id="board"></div>
+    <button id="toggle-rules" class="game-rules">Game Rules</button>
+    <div id="rules">
+        <p class="hidden">Ultimate Tic-Tac-Toe is a game played on a 3x3 grid of smaller Tic-Tac-Toe boards. Two players take turns, with one as "X" and the other as "O." Here are the key rules:</p>
+        <li class="hidden">On the first move, any player can start in any of the nine small boards.</li>
+        <li class="hidden">After that, players must make their moves in the small board corresponding to the opponent's last move.</li>
+        <li class="hidden">To win a small board, a player must get three of their symbols in a row, column, or diagonal.</li>
+        <li class="hidden">The goal is to win three small boards in a row, column, or diagonal to win the game.</li>
+        <li class="hidden">If a small board is already won or full, the opponent can choose any available small board for their move.</li>
+        <li class="hidden">The game ends when one player wins three small boards in line or when all small boards are full.</li>
+        <li class="hidden">In this particular version each board won assigns a point to the player who won it and in the end if there's no evident winner, wins the player with the most points.</li>
+        <li class="hidden">In case of a draw there's no point for any of the players.</li>
+    </div>
+    <h1 class="status">PLAYER's Turn</h1>
+    <section id="big-board">
+        <div class="small-board" id="0">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
+        <div class="small-board" id="1">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
+        <div class="small-board" id="2">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
+        <div class="small-board" id="3">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
+        <div class="small-board" id="4">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
+        <div class="small-board" id="5">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
+        <div class="small-board" id="6">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
+        <div class="small-board" id="7">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
+        <div class="small-board" id="8">
+            <div class="cells" id="0"></div>
+            <div class="cells" id="1"></div>
+            <div class="cells" id="2"></div>
+            <div class="cells" id="3"></div>
+            <div class="cells" id="4"></div>
+            <div class="cells" id="5"></div>
+            <div class="cells" id="6"></div>
+            <div class="cells" id="7"></div>
+            <div class="cells" id="8"></div>
+        </div>
     </section>
-    <button>Play Again</button>
+    <button class="reset">Play Again</button>
+    <script src="./js/Ultimate_TicTacToe.js"></script>
 </body>
 </html>

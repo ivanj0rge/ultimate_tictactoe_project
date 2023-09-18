@@ -1,55 +1,66 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Shadows Into Light', Arial, Helvetica, sans-serif;
     text-align: center;
 }
+header{
+    font-size: 50px;
+    background-color: rgba(199, 194, 194, 0.856) ;
+}
+#rules {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+    max-width: 600px;
+    padding-bottom: 10px;
 
-#bigboard {
- width: 100vh;
- height: 100vh; 
- margin: 0  auto;
- display: flex;
- flex-wrap: wrap;
- border: 1px solid black ;
+}
+.hidden {
+    display: none;
+}
+button#toggle-rules {
+    position: relative;
+    top: 20px;
+    
+}
+.game-rules {
+    border: 0.5px solid black;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-family: 'Shadows Into Light', Arial, Helvetica, sans-serif;
+    font-size: 18px;
 }
 
-    .bigtiles {
-         width: 32vmin;
-        height: 32vmin;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+#big-board {
+    width: 780px;
+    height: 780px; 
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background-color: rgb(102, 102, 102);
+}
 
-    .big-horizontal-lines {
-        border-bottom: 1vmin solid  black;
-    }
+.small-board { 
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2px;
+    width: 250px;
+    height: 250px;
+    border: .4vmin solid rgba(199, 194, 194, 0.856);
+    margin: auto;
+}
 
-    .big-vertical-lines {
-        border-bottom: 1vmin solid black;
-    }
-
-#board {
-    width: 32vh;
-    height: 32vh; 
-    margin: 0  auto;
+.cells {
+    background-color: #f0eeee;
     display: flex;
-    flex-wrap: wrap;
-    border: 1px solid black ;
-   }
-   
-       .tiles {
-            width: 10vmin;
-           height: 10vmin;
-           display: flex;
-           justify-content: center;
-           align-items: center;
-       }
-   
-       .horizontal-lines {
-           border-bottom: 0.5vmin solid  black;
-       }
-   
-       .vertical-lines {
-           border-bottom: 0.5vmin solid black;
-       }
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+  }
 
+  button.reset {
+    font-family: 'Shadows Into Light', Arial, Helvetica, sans-serif;
+    position: relative;
+    left: 250px;
+    font-size: 18px;
+  }
