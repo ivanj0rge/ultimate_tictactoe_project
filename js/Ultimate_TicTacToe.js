@@ -1,39 +1,69 @@
+  //!Problems to solve
+  //!declare winner
+  //!solve clicks to every cell
+  //!make jump from one small board to another according to chosen cell
+
+    
+
 /*----- constants -----*/
 const cells = document.querySelectorAll('.cells');
 const smallBoards = document.querySelectorAll('.small-board');
-const colors = { '0': 'white', 'X': 'blue', 'O': 'orange',};
-const status = document.querySelector('.status');
+const gameStatus = document.querySelector('.status');
+const symbols = { '0': null, 'X': 'X', 'O': 'O',};
+const rules = document.querySelectorAll('#rules p, #rules li');
+const playAgain = document.querySelector('.reset');
 
 /*----- state variables -----*/
-let currentPLayer = 'X';
+let currentPlayer = 'X';
 let boardState = ['', '', '', '', '', '', '', '', ''];
 let smallBoardState = ['', '', '', '', '', '', '', '', ''];
 let activeSmallBoard = null;
 
 
 /*----- cached elements  -----*/
-const playAgain = document.querySelector('.reset');
 
 
 
 /*----- event listeners -----*/
 // To make the Game Rules btn hide and display the rules text
 document.getElementById('toggle-rules').addEventListener('click', function() {
-    const rules = document.querySelectorAll('#rules p, #rules li');
     rules.forEach(rule => {
         rule.classList.toggle('hidden');
     });
 });
 
+//To reset game
+playAgain.addEventListener('click', resetGame);
+
+
 // To handle player movement when a cell is clicked
 cells.forEach((cell, index) => {
     cell.addEventListener('click', () => {
-        playerMove(activeSmallBoard, index);
+        if (activeSmallBoard === null || activeSmallBoard === index) {
+            if (boardState[index] === '' && !isGameOver()) {
+                cell.textContent = currentPlayer;
+                boardState[index] = currentPlayer;
+                smallBoardState[index] = currentPlayer;
+                
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                
+                if (checkWin(currentPlayer, smallBoardState)) {
+                    gameStatus.textContent = `${currentPlayer} wins the small board!`;
+                } else if (isSmallBoardFull(smallBoardState)) {
+                    gameStatus.textContent = "It's a draw!";
+                } else {
+                    gameStatus.textContent = `${currentPlayer}'s Turn`;
+                    //activeSmallBoard = index; // Update the active small board to the current cell.
+                }
+
+            }
+        }
     });
 });
 
 
 /*----- functions -----*/
+
 // To check for a win
 function checkWin(player, board) {
     const winCombos = [
@@ -60,3 +90,16 @@ function isGameOver() {
     // If any of these conditions are met, it returns true, if not, false
     return isSmallBoardFull(boardState) || checkWin('X', smallBoardState) || checkWin('O', smallBoardState);
 }
+
+// To reset game
+function resetGame() {
+    currentPlayer = 'X';
+    boardState = ['', '', '', '', '', '', '', '', ''];
+    smallBoardState = ['', '', '', '', '', '', '', '', ''];
+    activeSmallBoard = null;
+    gameStatus.textContent = `${currentPlayer}'s Turn`;
+
+    cells.forEach(cell => {
+        cell.textContent = '';
+    });
+} 
