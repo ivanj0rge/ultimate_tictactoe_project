@@ -1,10 +1,8 @@
   //!Problems to solve
   //!declare winner
   //!solve clicks to every cell
-  //!make jump from one small board to another according to chosen cell
-
-    
-
+  //!make jump from one small board to another according to chosen cell index
+ 
 /*----- constants -----*/
 const cells = document.querySelectorAll('.cells');
 const smallBoards = document.querySelectorAll('.small-board');
@@ -15,7 +13,17 @@ const playAgain = document.querySelector('.reset');
 
 /*----- state variables -----*/
 let currentPlayer = 'X';
-let boardState = ['', '', '', '', '', '', '', '', ''];
+let boardState = [    
+    ['', '', '', '', '', '', '', '', ''], // Cell 0 to 8
+    ['', '', '', '', '', '', '', '', ''], // Cell 9 to 17
+    ['', '', '', '', '', '', '', '', ''], // Cell 18 to 26
+    ['', '', '', '', '', '', '', '', ''], // Cell 27 to 35
+    ['', '', '', '', '', '', '', '', ''], // Cell 36 to 44
+    ['', '', '', '', '', '', '', '', ''], // Cell 45 to 53
+    ['', '', '', '', '', '', '', '', ''], // Cell 54 to 62
+    ['', '', '', '', '', '', '', '', ''], // Cell 63 to 71
+    ['', '', '', '', '', '', '', '', ''], // Cell 72 to 80
+];
 let smallBoardState = ['', '', '', '', '', '', '', '', ''];
 let activeSmallBoard = null;
 
@@ -36,12 +44,33 @@ document.getElementById('toggle-rules').addEventListener('click', function() {
 playAgain.addEventListener('click', resetGame);
 
 
+// To check for a win
+function checkWin(player, board) {
+    const winCombos = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6]             // Diagonals
+    ];
+
+    // Convert winCombos to use data-value attributes instead of indexes
+    const winCombosWithValues = winCombos.map(combo => combo.map(index => cells[index].getAttribute('data-value')));
+
+    // Use the 'some method to iterate over every winning combo
+    // If it finds a combination containing the same player's symbols, it returns true (win)
+    return winCombosWithValues.some(combo => combo.every(value => board[value] === player));
+}
+
+
 // To handle player movement when a cell is clicked
 cells.forEach((cell, index) => {
     cell.addEventListener('click', () => {
+        console.log('cell clicked', index);
+        console.log('current player', currentPlayer);
+        console.log('cell content before', cell.textContent);
         if (activeSmallBoard === null || activeSmallBoard === index) {
             if (boardState[index] === '' && !isGameOver()) {
                 cell.textContent = currentPlayer;
+                console.log('cell content after', cell.textContent);
                 boardState[index] = currentPlayer;
                 smallBoardState[index] = currentPlayer;
                 
@@ -49,8 +78,10 @@ cells.forEach((cell, index) => {
                 
                 if (checkWin(currentPlayer, smallBoardState)) {
                     gameStatus.textContent = `${currentPlayer} wins the small board!`;
+                    smallBoards[index].textContent = `${currentPlayer}`
                 } else if (isSmallBoardFull(smallBoardState)) {
                     gameStatus.textContent = "It's a draw!";
+                    smallBoards[index].textContent = null;
                 } else {
                     gameStatus.textContent = `${currentPlayer}'s Turn`;
                     //activeSmallBoard = index; // Update the active small board to the current cell.
@@ -61,20 +92,8 @@ cells.forEach((cell, index) => {
     });
 });
 
-
 /*----- functions -----*/
 
-// To check for a win
-function checkWin(player, board) {
-    const winCombos = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-        [0, 4, 8], [2, 4, 6]             // Diagonals
-    ];
-    // Use the 'some method to iterate over every winning combo
-    //if it finds a combination containing the same player's symbols it returns true (win)
-    return winCombos.some(combo => combo.every(index => board[index] === player));
-}
 
 // To check if small board is full
 function isSmallBoardFull(board) {
@@ -102,4 +121,4 @@ function resetGame() {
     cells.forEach(cell => {
         cell.textContent = '';
     });
-} 
+}
