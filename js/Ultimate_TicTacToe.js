@@ -1,7 +1,6 @@
 //! CURRENT BLOCKERS
 //? -BOARD DOESN'T LOCK TO THE SMALLBOARD W/ VALUE OF THE CELL CLICKED
-//? -IT DOENS'T ACTUALIZE THE CURRENTSMALLBOARD BEING PLAYED
-//? -THE initGAME FUNCTION DOESN'T RESET THE BOARD COMPLETELY
+//? -IT DOESN'T ACTUALIZE THE CURRENTSMALLBOARD BEING PLAYED
 
 /*----- constants -----*/
 const cells = document.querySelectorAll('.cells');
@@ -9,7 +8,11 @@ const smallBoards = document.querySelectorAll('.boards');
 const gameStatus = document.querySelector('.status');
 const rules = document.querySelectorAll('#rules p, #rules li');
 const playAgain = document.querySelector('.reset');
-const winCombos = [];
+const winCombos = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+  [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+  [0, 4, 8], [2, 4, 6]             // Diagonals
+];
 
 /*----- state variables -----*/
 let currentPlayer = 'X';
@@ -64,9 +67,7 @@ function cellClickHandler(event) {
     }
     // Update the cell's text content with the current player's symbol ('X' or 'O')
     cell.textContent = currentPlayer;
-    
-
-    
+       
     // Update the small board and overall board state
     gameStatus.innerHTML = `${currentPlayer}'s Turn`;
     smallBoardState[cellIndex] = currentPlayer;
@@ -97,18 +98,17 @@ function cellClickHandler(event) {
   });
   
   //<<<<<<<<<< SMALL BOARD WIN >>>>>>>>>>
-   function checkSmallBoardWin(player, smallBoardIndex) {
+  const symbols = smallBoardState;
+
+  function checkSmallBoardWin(player, smallBoardIndex) {  
     for (let i = 0; i < winCombos.length; i++) {
       const [a, b, c] = winCombos[i];
-      if (
-        smallBoardState[smallBoardIndex][a] === player &&
-        smallBoardState[smallBoardIndex][b] === player &&
-        smallBoardState[smallBoardIndex][c] === player
-      ) {
-        
+      
+      if (symbols[a] === player && symbols[b] === player && symbols[c] === player) {
+        smallBoardState[smallBoardIndex] = player;
         return true;
       }
-    }
+    }  
     return false;
   }
   //<<<<<<<<<< SMALL BOARD DRAW >>>>>>>>>>
@@ -131,46 +131,3 @@ function cellClickHandler(event) {
     }
   }
   
-//<<<<<<<<<< CHECK GAME WIN >>>>>>>>>>
-function checkGameWin(player) {
-    for (let i = 0; i < winCombos.length; i++) {
-      const [a, b, c] = winCombos[i];
-      if (
-        boardState[a] === player &&
-        boardState[b] === player &&
-        boardState[c] === player
-      ) {
-        // Handle game win here
-        return true;
-      }
-    }
-    return false;
-  }
-  
-
-
-  //<<<<<<<<<< WINNING COMBOS >>>>>>>>>>
-
-  // Rows
-for (let i = 0; i < 9; i++) {
-  for (let j = 0; j < 9; j++) {
-    winCombos.push([i * 9 + j, i * 9 + j + 1, i * 9 + j + 2]);
-  }
-}
-
-// Columns
-for (let i = 0; i < 9; i++) {
-  for (let j = 0; j < 9; j++) {
-    winCombos.push([i + j * 9, i + (j + 1) * 9, i + (j + 2) * 9]);
-  }
-}
-
-// Diagonals (top-left to bottom-right)
-for (let i = 0; i < 9; i++) {
-  winCombos.push([i * 9 + i, (i + 1) * 9 + i + 1, (i + 2) * 9 + i + 2]);
-}
-
-// Diagonals (top-right to bottom-left)
-for (let i = 0; i < 9; i++) {
-  winCombos.push([i * 9 + (8 - i), (i + 1) * 9 + (7 - i), (i + 2) * 9 + (6 - i)]);
-}
