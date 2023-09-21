@@ -1,7 +1,3 @@
-//! CURRENT BLOCKERS
-//? -BOARD DOESN'T LOCK TO THE SMALLBOARD W/ VALUE OF THE CELL CLICKED
-//? -IT DOESN'T ACTUALIZE THE CURRENTSMALLBOARD BEING PLAYED
-
 /*----- constants -----*/
 const cells = document.querySelectorAll('.cells');
 const smallBoards = document.querySelectorAll('.boards');
@@ -29,6 +25,7 @@ let smallBoardState = [
 ];
 let boardState = Array(9).fill('') ;
 let currentSmallBoard = null;
+let lastMove = null;
 
 // calling functions
 initGame();
@@ -40,6 +37,10 @@ function addEventListeners() {
   document.getElementById('toggle-rules').addEventListener('click', toggleRules);
   // To reset game
   playAgain.addEventListener('click', initGame);
+
+  cells.forEach(cell => {
+    cell.addEventListener('click', cellClickHandler);
+  });
 }
 
 function toggleRules() {
@@ -64,82 +65,83 @@ function clearBoard(boardElements) {
     board.textContent = '';
   });
 }
+
 //<<<<<<<<<<<<<<<<<<<< CHECK CELL CLICKS >>>>>>>>>>>>>>>>>>>>
-
-function cellClickHandler(event) {
-    const cell = event.target;
-    const cellIndex = Array.from(cells).indexOf(cell);
-
+function cellClickHandler(e) {
+    const cell = e.target;
+    const cellIndex = Array.from(cells).indexOf(cell);   
     const smallBoardIndex = Math.floor(cellIndex / 9);
     const cellIndexInBoard = cellIndex % 9;
     currentSmallBoard = smallBoardIndex
+    lastMove = {
+        cellIndexInBoard,
+        smallBoardIndex
+    };
     
-    console.log('Cell Index in Small Board:', cellIndexInBoard);
-    console.log('Current Small Board:', currentSmallBoard);
-
-    if (cellIndex === -1 || smallBoardState[smallBoardIndex][cellIndexInBoard] !== '' || currentSmallBoard !== null || cellIndex < 0 || cellIndex > 80) {
-      return; // Cell is not allowed to be clicked
-    }
-  
-    cell.textContent = currentPlayer;
+    console.log(`clicked by ${currentPlayer} cell ${cellIndexInBoard}, board ${currentSmallBoard}`);
+//!<<<<<<<<<<<< CHECK THIS IF STATEMENT>>>>>>>>>>>>>>>>>>>>>>>
+    if (
+        cellIndexInBoard !== -1 && 
+        smallBoardState[smallBoardIndex][cellIndexInBoard] === '' && 
+        currentSmallBoard === null &&
+        cellIndexInBoard >= 0 &&
+        cellIndexInBoard <= 80 &&
+        lastMove === null &&
+        lastMove[cellIndexInBoard] === smallBoardIndex
+        );
+ //!<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>> 
+    cell.textContent = currentPlayer; 
     gameStatus.innerHTML = `${currentPlayer}'s Turn`;
     smallBoardState[currentSmallBoard][cellIndex] = currentPlayer;
-    
-    console.log(`2nd click by ${currentPlayer}, cell: ${cellIndex}, board ${currentSmallBoard}`);
-    
+        
+
     if (checkSmallBoardWin(currentPlayer, currentSmallBoard)) {
         markSmallBoard(currentPlayer, currentSmallBoard);
     }
-    
-    if (checkSmallBoardDraw(currentPlayer, currentSmallBoard)) {
-        gameStatus.innerHTML = `board ${currentSmallBoard} It\'s a Draw`;
-        
+   
+    if (checkSmallBoardDraw(currentSmallBoard)) {
+        gameStatus.innerHTML = `board ${currentSmallBoard} It\'s a Draw`;      
     }
     
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
 
-    // Remove the click event listener from the clicked cell
+    console.log(`same click by ${currentPlayer} cell ${cellIndexInBoard}, board ${currentSmallBoard}`);
+    
     cell.removeEventListener('click', cellClickHandler);
   }
-  
-  // Add a click event listener to each cell
-  cells.forEach(cell => {
-    cell.addEventListener('click', cellClickHandler);
-  });
-  
-  //<<<<<<<<<< SMALL BOARD WIN >>>>>>>>>>
-  const symbols = smallBoardState;
+   
+//<<<<<<<<<< RESTRICTIONS OF MOVEMENT >>>>>>>>>>
 
-  function checkSmallBoardWin(player, smallBoardIndex) {  
+
+  //<<<<<<<<<< SMALL BOARD WIN >>>>>>>>>>
+  function checkSmallBoardWin(player, smallBoardIndex) {
     for (let i = 0; i < winCombos.length; i++) {
       const [a, b, c] = winCombos[i];
-      
-      if (symbols[a] === player && symbols[b] === player && symbols[c] === player) {
-        smallBoardState[smallBoardIndex] = player;
+  
+      if (
+        smallBoardState[smallBoardIndex][a] === player &&
+        smallBoardState[smallBoardIndex][b] === player &&
+        smallBoardState[smallBoardIndex][c] === player
+      ) {
         return true;
       }
-    }  
+    }
     return false;
   }
  
- 
   //<<<<<<<<<< SMALL BOARD DRAW >>>>>>>>>>
   function checkSmallBoardDraw(smallBoardIndex) {
-    if (symbols.some(symbol => symbol === '')) {
-      return false;
-    }
-   
-    if (checkSmallBoardWin('X', smallBoardIndex) || checkSmallBoardWin('O', smallBoardIndex)) {
-      return false;
-    }
-    return true;
-  }
+    const smallBoard = smallBoardState[smallBoardIndex];
+    return !smallBoard.includes('') && !checkSmallBoardWin('X', smallBoardIndex) && !checkSmallBoardWin('O', smallBoardIndex);
+}
+
+
    //<<<<<<<<<< MARK SMALL BOARD >>>>>>>>>>
    function markSmallBoard(player, smallBoardIndex) {
-    const cellsInSmallBoard = cells;
+    const cellsInSmallBoard = smallBoards[smallBoardIndex].querySelectorAll('.cells');
   
-    for (let i = smallBoardIndex * 9; i < (smallBoardIndex + 1) * 9; i++) {
+    for (let i = 0; i < cellsInSmallBoard.length; i++) {
         cellsInSmallBoard[i].textContent = player;
     }
-  }
+}
   
