@@ -21,7 +21,7 @@ let smallBoardState = [
     ['', '', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '']
 ];
 let boardState = Array(9).fill('') ;
 let currentSmallBoard = null;
@@ -80,27 +80,26 @@ function cellClickHandler(e) {
     
     console.log(`clicked by ${currentPlayer} cell ${cellIndexInBoard}, board ${currentSmallBoard}`);
 //!<<<<<<<<<<<< CHECK THIS IF STATEMENT>>>>>>>>>>>>>>>>>>>>>>>
-    if (
-        cellIndexInBoard !== -1 && 
+    if (cellIndexInBoard !== -1 && 
         smallBoardState[smallBoardIndex][cellIndexInBoard] === '' && 
-        currentSmallBoard === null &&
-        cellIndexInBoard >= 0 &&
+        currentSmallBoard === null && 
+        cellIndexInBoard >= 0 && 
         cellIndexInBoard <= 80 &&
-        lastMove === null &&
+        lastMove === null ||
         lastMove[cellIndexInBoard] === smallBoardIndex
-        );
+    ){
  //!<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>> 
     cell.textContent = currentPlayer; 
     gameStatus.innerHTML = `${currentPlayer}'s Turn`;
     smallBoardState[currentSmallBoard][cellIndex] = currentPlayer;
-        
+    }
 
     if (checkSmallBoardWin(currentPlayer, currentSmallBoard)) {
         markSmallBoard(currentPlayer, currentSmallBoard);
     }
    
     if (checkSmallBoardDraw(currentSmallBoard)) {
-        gameStatus.innerHTML = `board ${currentSmallBoard} It\'s a Draw`;      
+        gameStatus.innerHTML = `board ${currentSmallBoard} It\'s a Draw ! - ${currentPlayer}'s Turn`;      
     }
     
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
@@ -115,25 +114,35 @@ function cellClickHandler(e) {
 
   //<<<<<<<<<< SMALL BOARD WIN >>>>>>>>>>
   function checkSmallBoardWin(player, smallBoardIndex) {
+    const smallBoard = smallBoardState[smallBoardIndex];
     for (let i = 0; i < winCombos.length; i++) {
-      const [a, b, c] = winCombos[i];
-  
-      if (
-        smallBoardState[smallBoardIndex][a] === player &&
-        smallBoardState[smallBoardIndex][b] === player &&
-        smallBoardState[smallBoardIndex][c] === player
-      ) {
-        return true;
-      }
+        const [a, b, c] = winCombos[i];
+        if (
+            smallBoard[a] === player &&
+            smallBoard[b] === player &&
+            smallBoard[c] === player
+        ) {
+            return true;
+        }
     }
     return false;
-  }
- 
+}
+
   //<<<<<<<<<< SMALL BOARD DRAW >>>>>>>>>>
   function checkSmallBoardDraw(smallBoardIndex) {
     const smallBoard = smallBoardState[smallBoardIndex];
-    return !smallBoard.includes('') && !checkSmallBoardWin('X', smallBoardIndex) && !checkSmallBoardWin('O', smallBoardIndex);
-}
+  
+    for (let i = 0; i < smallBoard.length; i++) {
+      if (smallBoard[i] === '') {
+        return false;
+      }
+    }
+    if (checkSmallBoardWin('X', smallBoardIndex) || checkSmallBoardWin('O', smallBoardIndex)) {
+      return false;
+    }
+    return true;
+  }
+  
 
 
    //<<<<<<<<<< MARK SMALL BOARD >>>>>>>>>>
