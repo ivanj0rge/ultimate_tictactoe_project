@@ -16,7 +16,17 @@ const winCombos = [
 
 /*----- state variables -----*/
 let currentPlayer = 'X';
-let smallBoardState = Array(81).fill('');
+let smallBoardState = [
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', ''],
+];
 let boardState = Array(9).fill('') ;
 let currentSmallBoard = null;
 
@@ -56,23 +66,24 @@ function clearBoard(boardElements) {
 }
 //<<<<<<<<<<<<<<<<<<<< CHECK CELL CLICKS >>>>>>>>>>>>>>>>>>>>
 
-// Add this function to your code to handle cell clicks
 function cellClickHandler(event) {
     const cell = event.target;
-    console.log(`1st click by ${currentPlayer}`);
-    // Check if the cell is in the allowed small board and is empty
     const cellIndex = Array.from(cells).indexOf(cell);
-    if (cellIndex === -1 || smallBoardState[cellIndex] !== '' || currentSmallBoard !== null) {
+
+    const smallBoardIndex = Math.floor(cellIndex / 9);
+    const cellIndexInBoard = cellIndex % 9;
+    currentSmallBoard = smallBoardIndex
+    
+    console.log('Cell Index in Small Board:', cellIndexInBoard);
+    console.log('Current Small Board:', currentSmallBoard);
+
+    if (cellIndex === -1 || smallBoardState[smallBoardIndex][cellIndexInBoard] !== '' || currentSmallBoard !== null || cellIndex < 0 || cellIndex > 80) {
       return; // Cell is not allowed to be clicked
     }
-    // Update the cell's text content with the current player's symbol ('X' or 'O')
-    cell.textContent = currentPlayer;
-       
-    // Update the small board and overall board state
-    gameStatus.innerHTML = `${currentPlayer}'s Turn`;
-    smallBoardState[cellIndex] = currentPlayer;
-    boardState[cellIndex + (currentSmallBoard * 9)] = currentPlayer;
   
+    cell.textContent = currentPlayer;
+    gameStatus.innerHTML = `${currentPlayer}'s Turn`;
+    smallBoardState[currentSmallBoard][cellIndex] = currentPlayer;
     
     console.log(`2nd click by ${currentPlayer}, cell: ${cellIndex}, board ${currentSmallBoard}`);
     
@@ -85,7 +96,6 @@ function cellClickHandler(event) {
         
     }
     
-    // Toggle the current player
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
 
     // Remove the click event listener from the clicked cell
@@ -111,6 +121,8 @@ function cellClickHandler(event) {
     }  
     return false;
   }
+ 
+ 
   //<<<<<<<<<< SMALL BOARD DRAW >>>>>>>>>>
   function checkSmallBoardDraw(smallBoardIndex) {
     if (symbols.some(symbol => symbol === '')) {
