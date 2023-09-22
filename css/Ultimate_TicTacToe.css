@@ -1,14 +1,21 @@
+:root {
+    --orange: #F2C14E;
+    --winning-blocks: #2d414b;
+}
+
 body {
     font-family: 'Shadows Into Light', Arial, Helvetica, sans-serif;
     text-align: center;
-    background-color: whitesmoke
+    background-color: #2d414b;
+    color: var(--orange);
 }
 header{
-    font-size: 50px;
-    background-color: rgba(199, 194, 194, 0.856) ;
+    font-size: 60px;
+    text-shadow: rgba(239, 204, 9, 0.466);
 }
 #rules {
     text-align: left;
+    text-shadow: rgba(239, 204, 9, 0.466);
     display: flex;
     flex-direction: column;
     margin: 10px auto;
@@ -23,11 +30,13 @@ button#toggle-rules {
     position: relative;
     top: 20px;
     cursor: pointer;
-    
+}
+button:hover {
+    transform:translateY(2px) ;
 }
 .game-rules {
     border: 0.5px solid black;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 2px 2px 4px rgba(239, 204, 9, 0.466);;
     font-family: 'Shadows Into Light', Arial, Helvetica, sans-serif;
     font-size: 18px;
 }
@@ -35,10 +44,10 @@ button#toggle-rules {
 #container {
     width: 780px;
     height: 780px; 
-    margin: 20px auto;
+    margin: 30px auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    background-color: rgb(102, 102, 102);
+    background-color: #2d414b;
 }
 
 .boards { 
@@ -49,35 +58,56 @@ button#toggle-rules {
     width: 250px;
     height: 250px;
     margin: auto;
-    background-color: rgb(102, 102, 102);
+    background-color: #2d414b;
+    font-size: 200px;
+    font-family: 'Shadows Into Light', Arial, Helvetica, sans-serif;
+    border-right: 10px solid;
+    border-bottom: 10px solid;
+    border-color: #F2C14E;
 }
-
+.boards:nth-child(3n) {
+    border-right: none;
+}
+.boards:nth-child(6) ~ .boards {
+    border-bottom: none;
+}
 .cells {
-    background-color: #f0eeee;
+    color: var(--orange);
+    border-right: 2px solid;
+    border-bottom: 2px solid;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 55px;
     cursor: pointer;
     width: 100%;
     height: 100%;
-  }
+    font-family: 'Finger Paint', cursive;
+}
+.cells:nth-child(3n) {
+    border-right: none;
+}
+.cells:nth-child(6) ~ .cells {
+    border-bottom: none;
+}
 
   button.reset {
     font-family: 'Shadows Into Light', Arial, Helvetica, sans-serif;
     position: relative;
     left: 250px;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
     border: 0.5px solid black;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 2px 2px 4px rgba(239, 204, 9, 0.466);;
   }
 
   .active {
-    background-color: rgba(239, 204, 9, 0.5);
+    background-color: rgba(239, 204, 9, 0.055);
   }
 
   .cell-disabled {
     pointer-events: none;
-    opacity: 0.6; 
+    opacity: 0.6;
+    font-family: 'Finger Paint', cursive;; 
+    
 }

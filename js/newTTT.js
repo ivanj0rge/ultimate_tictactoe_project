@@ -20,24 +20,28 @@ document.querySelectorAll('.cells').forEach(cell => {
 
             currentPlayer = currentPlayer * -1
             let currentClass = cell.classList[1]
-            document.querySelectorAll('.boards').forEach(board => {
+            
+            let boards = document.querySelectorAll('.boards')
+            boards.forEach(board => {
                 if (!board.classList.contains(currentClass)) {
                     board.classList.remove('active')
-                } else if (result) {
-                    board.classList.remove('active')
-                    let wonCells = parent.querySelectorAll('.cells')
-                    wonCells.forEach(cell => {
-                        cell.classList.add('cell-disabled')
-                    });
-                    result = result === 'X' ? `Payer X wins board` : result === 'O' ? 'Player O wins!' : "It's a draw"
-                    alert(result)
-                    board.classList.add('active')
-                  } else {
+                }else {
                     board.classList.add('active')
                 }
-            })
-        }
-    })
+                })
+
+            if (isWonOrDraw(currentBoard)) {
+                currentBoard.classList.add('blocked')
+                isBoardWon = true
+                let wonCells = parent.querySelectorAll('.cells')
+                    wonCells.forEach(cell => {
+                        cell.classList.add('cell-disabled')
+                    })
+            result = result === 'X' ? `Payer X wins board` : result === 'O' ? 'Player O wins!' : "It's a draw"
+            alert(result)
+                }
+            }
+        })
 })
 
 
