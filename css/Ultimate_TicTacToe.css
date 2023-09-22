@@ -72,3 +72,12 @@ button#toggle-rules {
     border: 0.5px solid black;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   }
+
+  .active {
+    background-color: rgba(239, 204, 9, 0.5);
+  }
+
+  .cell-disabled {
+    pointer-events: none;
+    opacity: 0.6; 
+}

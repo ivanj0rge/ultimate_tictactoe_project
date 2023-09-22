@@ -77,9 +77,7 @@ cell.removeEventListener('click', cellClickHandler);
     const isCellEmpty = smallBoardIndex[cellIndexInBoard] === '';
     console.log(isCellEmpty);
     //console.log(smallBoardState);
-    //console.log(smallBoardState[smallBoardIndex][cellIndexInBoard]);
     const isCellIndexValid = cellIndexInBoard >= 0 && cellIndexInBoard <= 8;
-
     return isFirstPlay || (isNextMoveOk && isCellEmpty && isCellIndexValid);
 }
 
@@ -118,10 +116,11 @@ function markSmallBoard(player, smallBoardIndex) {
 
 function initGame() {
     currentPlayer = 'X';
-   // smallBoardState.fill('');
+    smallBoardState = Array(9).fill(Array(9).fill(''))
     boardState.fill('');
     currentSmallBoard = null;
     clearBoard(cells);
     gameStatus.innerHTML = `${currentPlayer}'s Turn`;
     addEventListeners();
+    isFirstMove = true;
 }
