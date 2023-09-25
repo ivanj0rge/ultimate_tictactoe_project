@@ -3,6 +3,7 @@ const playAgain = document.querySelector('.reset');
 let currentPlayer = 1
 let currentBoard = null
 let boardState = Array(9).fill('')
+let nextGo = false
 
 initGame();
 
@@ -17,13 +18,12 @@ document.querySelectorAll('.cells').forEach(cell => {
             
             let result = isWonOrDraw(parent)
 
-
             currentPlayer = currentPlayer * -1
             let currentClass = cell.classList[1]
             
             let boards = document.querySelectorAll('.boards')
             boards.forEach(board => {
-                if (!board.classList.contains(currentClass)) {
+                if (!board.classList.contains(currentClass) && nextGo === false) {
                     board.classList.remove('active')
                 }else {
                     board.classList.add('active')
@@ -36,13 +36,15 @@ document.querySelectorAll('.cells').forEach(cell => {
                             cell.classList.add('cell-disabled')
                         })
                 result = result === 'X' ? `Payer X wins board` : result === 'O' ? 'Player O wins!' : "It's a draw"  
+                    
                     }
 
                   if (isWonOrDraw(board) && board.classList.contains(currentClass)) {
+                    nextGo = true
                   chooseOtherBoard();
                   }
                 })
-
+                nextGo = false
             }
         })
 })
@@ -74,8 +76,8 @@ function isGameWonOrDraw() {
   for (const combo of winCombos) {
       const [a, b, c] = combo;
       const boardValues = boardState.slice(a, a + 3);
-      if (boardValues[0] && boardValues[0] === boardValues[1] && boardValues[1] === boardValues[2]) {
-          return boardValues[0];
+      if (boardValues[a] && boardValues[a] === boardValues[b] && boardValues[b] === boardValues[c]) {
+          return boardValues[a];
       }
   }
 
@@ -92,9 +94,10 @@ function chooseOtherBoard() {
   
   boards.forEach(board => {
 
-    if (board.getAttribute('data-value') !== currentBoard.getAttribute('data-value') && !board.classList.contains('blocked')) {
+    if (board !== currentBoard && !board.classList.contains('blocked')) {
       board.classList.add(activeBoardClass)
-
+    } else {
+      board.classList.remove(activeBoardClass)
     }
   })
 }
