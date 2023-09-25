@@ -8,9 +8,9 @@ initGame();
 
 document.querySelectorAll('.cells').forEach(cell => {
     cell.addEventListener('click', () => {
+      console.log(cell.getAttribute('data-value'));
         let parent = cell.closest('.boards')
-        let isBoardWon = parent.getAttribute('winner') === 'true'
-        if (cell.innerHTML === '' && parent.classList.contains('active') && !isBoardWon) {
+        if (cell.innerHTML === '' && parent.classList.contains('active')) {
             cell.innerHTML = currentPlayer === 1 ? 'X' : 'O'
             currentBoard = parent
             console.log(currentBoard);
@@ -28,18 +28,21 @@ document.querySelectorAll('.cells').forEach(cell => {
                 }else {
                     board.classList.add('active')
                 }
+
+                if (isWonOrDraw(currentBoard)) {
+                  currentBoard.classList.add('blocked')
+                    let wonCells = parent.querySelectorAll('.cells')
+                        wonCells.forEach(cell => {
+                            cell.classList.add('cell-disabled')
+                        })
+                result = result === 'X' ? `Payer X wins board` : result === 'O' ? 'Player O wins!' : "It's a draw"  
+                    }
+
+                  if (isWonOrDraw(board) && board.classList.contains(currentClass)) {
+                  chooseOtherBoard();
+                  }
                 })
 
-            if (isWonOrDraw(currentBoard)) {
-                currentBoard.classList.add('blocked')
-                isBoardWon = true
-                let wonCells = parent.querySelectorAll('.cells')
-                    wonCells.forEach(cell => {
-                        cell.classList.add('cell-disabled')
-                    })
-            result = result === 'X' ? `Payer X wins board` : result === 'O' ? 'Player O wins!' : "It's a draw"
-            alert(result)
-                }
             }
         })
 })
@@ -67,6 +70,34 @@ function isWonOrDraw(board) {
         return null
 }
 
+function isGameWonOrDraw() {
+  for (const combo of winCombos) {
+      const [a, b, c] = combo;
+      const boardValues = boardState.slice(a, a + 3);
+      if (boardValues[0] && boardValues[0] === boardValues[1] && boardValues[1] === boardValues[2]) {
+          return boardValues[0];
+      }
+  }
+
+  if (boardState.every(value => value !== '')) {
+      return 'Draw';
+  }
+
+  return null;
+}
+
+function chooseOtherBoard() {
+  const boards = document.querySelectorAll('.boards');
+  const activeBoardClass = 'active';
+  
+  boards.forEach(board => {
+
+    if (board.getAttribute('data-value') !== currentBoard.getAttribute('data-value') && !board.classList.contains('blocked')) {
+      board.classList.add(activeBoardClass)
+
+    }
+  })
+}
 
 function addEventListeners() {
     document.getElementById('toggle-rules').addEventListener('click', toggleRules);

@@ -44,7 +44,7 @@ button:hover {
 #container {
     width: 780px;
     height: 780px; 
-    margin: 30px auto;
+    margin: 40px auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     background-color: #2d414b;
