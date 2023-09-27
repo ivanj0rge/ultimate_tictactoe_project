@@ -13,11 +13,8 @@ document.querySelectorAll('.cells').forEach(cell => {
         let parent = cell.closest('.boards')
         if (cell.innerHTML === '' && parent.classList.contains('active')) {
             cell.innerHTML = currentPlayer === 1 ? 'X' : 'O'
-            currentBoard = parent
-            console.log(currentBoard);
+            currentBoard = parent          
             
-            let result = isWonOrDraw(parent)
-
             currentPlayer = currentPlayer * -1
             let currentClass = cell.classList[1]
             
@@ -29,14 +26,14 @@ document.querySelectorAll('.cells').forEach(cell => {
                     board.classList.add('active')
                 }
 
-                if (isWonOrDraw(currentBoard)) {
+                let result = isWonOrDraw(currentBoard);
+
+                if (result) {
                   currentBoard.classList.add('blocked')
                     let wonCells = parent.querySelectorAll('.cells')
                         wonCells.forEach(cell => {
                             cell.classList.add('cell-disabled')
-                        })
-                result = result === 'X' ? `Payer X wins board` : result === 'O' ? 'Player O wins!' : "It's a draw"  
-                    
+                        })                    
                     }
 
                   if (isWonOrDraw(board) && board.classList.contains(currentClass)) {
@@ -45,6 +42,11 @@ document.querySelectorAll('.cells').forEach(cell => {
                   }
                 })
                 nextGo = false
+            }
+            let gameResult = isGameWonOrDraw();
+            if (gameResult) {
+              gameResult = gameResult === 'X' ? `Payer X wins board` : result === 'O' ? 'Player O wins!' : "It's a draw"  
+              alert(gameResult);
             }
         })
 })
@@ -73,13 +75,18 @@ function isWonOrDraw(board) {
 }
 
 function isGameWonOrDraw() {
-  for (const combo of winCombos) {
+    for (const combo of winCombos) {
       const [a, b, c] = combo;
-      const boardValues = boardState.slice(a, a + 3);
-      if (boardValues[a] && boardValues[a] === boardValues[b] && boardValues[b] === boardValues[c]) {
-          return boardValues[a];
+  
+      const boardA = boardState[a];
+      const boardB = boardState[b];
+      const boardC = boardState[c];
+  
+      // Check if a player has won the game
+      if (boardA && boardA === boardB && boardB === boardC) {
+        return boardA;
       }
-  }
+    }
 
   if (boardState.every(value => value !== '')) {
       return 'Draw';
