@@ -15,6 +15,7 @@ To access the code and run the project locally, follow these steps:
 Clone the repository: git clone https://github.com/ivanj0rge/ultimate_tictactoe_project
 Open the project folder in your preferred code editor.
 Open the index.html file in your browser to start playing.
+
 Timeframe & Working Team:
 
 I worked on this project individually within a one-week timeframe.
@@ -51,6 +52,7 @@ function checkSmallBoardWin(smallBoard) {
 function handleMove(cell) {
     // Code for handling user moves...
 }
+
 Challenges:
 
 A technical challenge was managing the complexity of game logic for Ultimate Tic Tac Toe.
