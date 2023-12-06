@@ -1,4 +1,7 @@
 # ultimate_tictactoe_project
+![Screenshot 2023-12-06 125545](https://github.com/ivanj0rge/ultimate_tictactoe_project/assets/143030533/35041615-d8b5-4c85-ac67-55e8afa9a552)
+
+
 
 Description:
 
