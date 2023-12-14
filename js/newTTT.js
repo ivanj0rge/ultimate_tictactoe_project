@@ -54,8 +54,6 @@ document.querySelectorAll('.cells').forEach(cell => {
 
 const winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], 
 [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
- 
-
 
 
 function isWonOrDraw(board) {
@@ -65,11 +63,13 @@ function isWonOrDraw(board) {
     for (const combo of winCombos) {
         const [a, b, c] = combo;
         if (cellValues[a] && cellValues[a] === cellValues[b] && cellValues[b] === cellValues[c]) {
-            return cellValues[a]
+          alert(`${cellValues[a]} wins the board!`);  
+          return cellValues[a]
         }
     }
         if (cellValues.every(value => value !== '')) {
-            return 'Draw'
+          alert('It\'s a draw!');  
+          return 'Draw'
         }
         return null
 }
